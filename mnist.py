@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, render_template, flash
 from werkzeug.utils import secure_filename
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.preprocessing import image
+from tensorflow.keras.optimizers import Adadelta
 
 import numpy as np
 
@@ -18,7 +19,7 @@ app = Flask(__name__)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-model = load_model('./model.h5')#学習済みモデルをロード
+model = load_model('./model.h5', custom_objects={'Adadelta': Adadelta})
 
 
 @app.route('/', methods=['GET', 'POST'])
